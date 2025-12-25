@@ -34,8 +34,10 @@ async def process_image(
     blur: Optional[int] = Form(1),
     invert: Optional[bool] = Form(False),
     grayscale: Optional[bool] = Form(False),
-    edge: Optional[bool] = Form(False)
+    edge: Optional[bool] = Form(False),
+    rotate: Optional[int] = Form(0),  
 ):
+
     data = await file.read()
     img = read_imagefile(data)
     if img is None:
@@ -75,5 +77,14 @@ async def process_image(
         edges = cv2.Canny(gray, 100, 200)
         img = cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)
 
+    # Rotate (90, 180, 270)
+    if rotate == 90:
+        img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+    elif rotate == 180:
+        img = cv2.rotate(img, cv2.ROTATE_180)
+    elif rotate == 270:
+        img = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
+
     b64 = img_to_base64(img)
     return {"image": b64}
+

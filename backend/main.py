@@ -1,4 +1,3 @@
-# backend/main.py
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 import cv2
@@ -11,7 +10,7 @@ app = FastAPI()
 # Allow local dev from frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # di production ganti ke domain frontend
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -43,7 +42,7 @@ async def process_image(
     if img is None:
         return {"error": "Invalid image"}
 
-    # Apply brightness (HSV V channel)
+    # Apply brightness 
     if brightness != 0:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         h, s, v = cv2.split(hsv)
@@ -71,13 +70,13 @@ async def process_image(
     if invert:
         img = cv2.bitwise_not(img)
 
-    # Edge detection (Canny) — produce grayscale-looking edges
+    # Edge detection 
     if edge:
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         edges = cv2.Canny(gray, 100, 200)
         img = cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)
 
-    # Rotate (90, 180, 270)
+    # Rotate 
     if rotate == 90:
         img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
     elif rotate == 180:
@@ -85,6 +84,7 @@ async def process_image(
     elif rotate == 270:
         img = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
 
+    #return image 
     b64 = img_to_base64(img)
     return {"image": b64}
 

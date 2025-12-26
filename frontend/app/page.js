@@ -62,7 +62,7 @@ export default function Home() {
     setProcessed("data:image/jpeg;base64," + data.image);
   };
 
-  // ✅ DEBOUNCE BRIGHTNESS (BUG FIX)
+
   useEffect(() => {
     if (!file) return;
 
